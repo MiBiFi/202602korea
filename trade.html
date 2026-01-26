@@ -1,108 +1,102 @@
-<!-- FX Calculator (Fixed Rate) -->
-<section id="fx-calculator" class="card">
-  <div class="card-header">
-    <h2>匯率計算機</h2>
-    <p class="muted">固定匯率：30 TWD = 1 USD = 1400 KRW（僅供估算）</p>
-  </div>
+<section class="card" id="fx-sync">
+  <h2>匯率換算</h2>
+  <p class="muted">固定匯率：30 TWD = 1 USD = 1400 KRW（僅供估算）</p>
 
-  <div class="fx-grid">
-    <label class="fx-field">
-      <span>來源幣別</span>
-      <select id="fx-from">
-        <option value="TWD" selected>TWD 台幣</option>
-        <option value="USD">USD 美金</option>
-        <option value="KRW">KRW 韓元</option>
-      </select>
+  <div class="fx-sync-grid">
+    <label>
+      <span>美金 USD</span>
+      <input id="usd" type="number" inputmode="decimal" step="0.01" />
     </label>
 
-    <div class="fx-actions">
-      <button id="fx-swap" type="button" class="btn">交換</button>
-    </div>
-
-    <label class="fx-field">
-      <span>目標幣別</span>
-      <select id="fx-to">
-        <option value="KRW" selected>KRW 韓元</option>
-        <option value="TWD">TWD 台幣</option>
-        <option value="USD">USD 美金</option>
-      </select>
+    <label>
+      <span>台幣 TWD</span>
+      <input id="twd" type="number" inputmode="decimal" step="0.01" />
     </label>
 
-    <label class="fx-field fx-amount">
-      <span>金額</span>
-      <input id="fx-amount" type="number" inputmode="decimal" min="0" step="0.01" value="1" />
+    <label>
+      <span>韓元 KRW</span>
+      <input id="krw" type="number" inputmode="decimal" step="1" />
     </label>
-  </div>
-
-  <div class="fx-result">
-    <div id="fx-result" class="fx-result-main">—</div>
-    <div class="muted">固定匯率不會自動更新；如要換成即時匯率，再接 API 即可。</div>
   </div>
 </section>
 
 <style>
-  /* 若你網站本來就有 card / btn / muted，可刪掉這段樣式，避免重複 */
-  .card{border:1px solid #e6e6e6;border-radius:14px;padding:16px;background:#fff}
-  .card-header h2{margin:0 0 6px 0;font-size:18px}
-  .muted{color:#666;font-size:12px;margin:0}
-  .btn{border:1px solid #ddd;background:#f7f7f7;border-radius:10px;padding:10px 12px;cursor:pointer}
-  .fx-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end;margin-top:12px}
-  .fx-field{display:flex;flex-direction:column;gap:6px}
-  .fx-field select,.fx-field input{border:1px solid #ddd;border-radius:10px;padding:10px 12px}
-  .fx-actions{display:flex;justify-content:center}
-  .fx-amount{grid-column:1/-1}
-  .fx-result{margin-top:12px;padding:12px;border-radius:12px;background:#fafafa}
-  .fx-result-main{font-weight:700;font-size:16px;margin-bottom:6px}
-  @media (max-width:520px){
-    .fx-grid{grid-template-columns:1fr;align-items:stretch}
-    .fx-actions{justify-content:flex-start}
-    .fx-amount{grid-column:auto}
+  .card {
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    padding: 16px;
+    background: #fff;
+  }
+  .card h2 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+  }
+  .muted {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  .fx-sync-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .fx-sync-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .fx-sync-grid input {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+  @media (max-width: 600px) {
+    .fx-sync-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 
 <script>
 (() => {
-  const $from = document.getElementById("fx-from");
-  const $to = document.getElementById("fx-to");
-  const $amount = document.getElementById("fx-amount");
-  const $result = document.getElementById("fx-result");
-  const $swap = document.getElementById("fx-swap");
+  const usd = document.getElementById("usd");
+  const twd = document.getElementById("twd");
+  const krw = document.getElementById("krw");
 
-  // 固定匯率：30 TWD = 1 USD = 1400 KRW
-  // 以 TWD 作為中介
-  const TO_TWD = {
-    TWD: 1,
-    USD: 30,
-    KRW: 30 / 1400
-  };
+  // 固定匯率
+  // 30 TWD = 1 USD = 1400 KRW
+  let lock = false;
 
-  function fmt(n){
-    // 保留兩位，並加上千分位
-    const x = Number.isFinite(n) ? n : 0;
-    return x.toLocaleString(undefined, { maximumFractionDigits: 2, minimumFractionDigits: 2 });
+  function fromUSD(value) {
+    twd.value = (value * 30).toFixed(2);
+    krw.value = Math.round(value * 1400);
   }
 
-  function convert(){
-    const from = $from.value;
-    const to = $to.value;
-    const amt = parseFloat($amount.value || "0");
-
-    if (from === to) {
-      $result.textContent = `${fmt(amt)} ${from} = ${fmt(amt)} ${to}`;
-      return;
-    }
-
-    const twd = amt * TO_TWD[from];
-    const out = twd / TO_TWD[to];
-    $result.textContent = `${fmt(amt)} ${from} = ${fmt(out)} ${to}`;
+  function fromTWD(value) {
+    usd.value = (value / 30).toFixed(2);
+    krw.value = Math.round(value * (1400 / 30));
   }
 
-  $swap.addEventListener("click", () => {
-    [$from.value, $to.value] = [$to.value, $from.value];
-    convert();
-  });
+  function fromKRW(value) {
+    usd.value = (value / 1400).toFixed(2);
+    twd.value = (value * (30 / 1400)).toFixed(2);
+  }
 
-  [$from, $to, $amount].forEach(el => el.addEventListener("input", convert));
-  convert();
+  function safe(fn) {
+    return e => {
+      if (lock) return;
+      lock = true;
+      const v = parseFloat(e.target.value);
+      if (!isNaN(v)) fn(v);
+      lock = false;
+    };
+  }
+
+  usd.addEventListener("input", safe(fromUSD));
+  twd.addEventListener("input", safe(fromTWD));
+  krw.addEventListener("input", safe(fromKRW));
 })();
 </script>
