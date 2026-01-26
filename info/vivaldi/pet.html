@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>寵物服務｜SONO Pet Club</title>
+  <style>
+    :root{
+      --bg:#ffffff; --text:#111; --muted:#666; --line:#e9e9e9; --soft:#f7f7f7;
+      --radius:14px; --max:1000px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+      line-height:1.6;
+    }
+    a{ color:inherit; }
+    .container{ width:min(var(--max), calc(100% - 32px)); margin:0 auto; }
+    header{
+      border-bottom:1px solid var(--line);
+      padding:22px 0 14px;
+      position:sticky; top:0; background:rgba(255,255,255,.92); backdrop-filter: blur(8px);
+    }
+    h1{ margin:0; font-size:26px; }
+    .sub{ margin:6px 0 0; color:var(--muted); font-size:14px; }
+    .tabs{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+    .tab{
+      border:1px solid var(--line); background:var(--soft);
+      padding:10px 14px; border-radius:999px; cursor:pointer; font-weight:700; font-size:14px;
+    }
+    .tab.active{ background:#111; color:#fff; border-color:#111; }
+    main{ padding:18px 0 40px; }
+    .panel{ display:none; }
+    .panel.active{ display:block; }
+    .section-head{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin:14px 0 10px;
+    }
+    h2{ margin:0; font-size:20px; }
+    .note{ margin:6px 0 0; color:var(--muted); font-size:14px; }
+    .btn{
+      display:inline-block; text-decoration:none;
+      border:1px solid var(--line); background:#fff;
+      padding:10px 12px; border-radius:999px; font-weight:700; font-size:14px;
+    }
+    .btn:hover{ background:var(--soft); }
+    .card{
+      border:1px solid var(--line); border-radius:var(--radius);
+      padding:14px; margin:12px 0; background:#fff;
+    }
+    .meta{ color:#888; font-size:12px; letter-spacing:.2px; text-transform:uppercase; margin:0 0 6px; }
+    .title{ margin:0 0 6px; font-size:16px; }
+    .desc{ margin:0 0 10px; color:var(--muted); font-size:14px; }
+    .row{ display:flex; gap:12px; flex-wrap:wrap; border-top:1px dashed var(--line); padding-top:10px; margin-top:10px; }
+    .pill{
+      background:var(--soft); border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px; font-size:13px;
+    }
+    .price{ font-weight:800; }
+    table{ width:100%; border-collapse:collapse; margin-top:10px; }
+    th,td{ text-align:left; padding:10px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
+    th{ background:var(--soft); font-size:13px; }
+    td{ font-size:14px; }
+    .small{ color:var(--muted); font-size:12.5px; }
+    footer{ border-top:1px solid var(--line); padding:16px 0; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <h1>寵物服務（Pet Club）</h1>
+      <p class="sub">課程（含價格）／設施／購物（中英對照）。價格與時間以官方最新公告為準。</p>
+
+      <nav class="tabs" aria-label="分頁">
+        <button class="tab active" data-tab="courses" type="button">課程 Courses</button>
+        <button class="tab" data-tab="facilities" type="button">設施 Facilities</button>
+        <button class="tab" data-tab="shopping" type="button">購物 Shopping</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ================= Courses ================= -->
+    <section class="panel active" id="courses" aria-labelledby="課程">
+      <div class="section-head">
+        <div>
+          <h2>課程（Courses）</h2>
+        </div>
+        <a class="btn" href="https://www.sonohotelsresorts.com/petclub/discover/list" target="_blank" rel="noopener">
+          官方課程頁（開新分頁）
+        </a>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">認養流浪犬是一種愛（Adopting abandoned dogs is love.）</p>
+        <p class="desc">推廣流浪犬認養與互動體驗。</p>
+        <div class="row">
+          <span class="pill">價格：<span class="price">未顯示</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO CALM GOYANG</p>
+        <p class="title">SONO PET 一日學校課程（SONO PET School One Day Class）</p>
+        <p class="desc">飼主與狗狗互動的一日體驗課。</p>
+        <div class="row">
+          <span class="pill">期間：2024.06.01 ~ 2027.05.31</span>
+          <span class="pill">價格：<span class="price">₩ 60,000</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">寵物烘焙課（Baking Class for Pets）</p>
+        <p class="desc">製作雞胸肉瑪芬、香蕉餅乾等寵物點心。</p>
+        <div class="row">
+          <span class="pill">期間：2025.12.20 ~ 2026.12.31（每日）</span>
+          <span class="pill">價格：<span class="price">₩ 25,000</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">兒童訓練師體驗（Child Trainer）</p>
+        <p class="desc">教導孩子正確的養狗觀念與互動方式。</p>
+        <div class="row">
+          <span class="pill">期間：2025.12.20 ~ 2026.12.31（每週六）</span>
+          <span class="pill">價格：<span class="price">₩ 10,000</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">寵物羊毛氈徽章製作（펫 양모펠트 뱃지 만들기）</p>
+        <p class="desc">使用羊毛氈製作寵物造型徽章。</p>
+        <div class="row">
+          <span class="pill">期間：2025.12.20 ~ 2026.12.31</span>
+          <span class="pill">價格：<span class="price">未顯示</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">伴侶犬遊戲學習（반려견 놀이학습）</p>
+        <p class="desc">透過遊戲提升狗狗學習與互動能力。</p>
+        <div class="row">
+          <span class="pill">期間：2026.01.01 ~ 2027.02.28</span>
+          <span class="pill">價格：<span class="price">未顯示</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">寵物玩具製作（Making Pet Toys）</p>
+        <p class="desc">製作寵物玩具（截圖顯示價格）。</p>
+        <div class="row">
+          <span class="pill">期間：2024.06.01 ~ 2026.12.31</span>
+          <span class="pill">價格：<span class="price">₩ 20,000</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">一對一行為諮詢與矯正（1:1 행동상담&교정）</p>
+        <p class="desc">由專業人員進行行為諮詢、矯正與訓練建議。</p>
+        <div class="row">
+          <span class="pill">期間：2024.09.02 ~ 2026.12.31</span>
+          <span class="pill">價格：<span class="price">未顯示</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">寵物禮儀認證（SONO PET Manner dog licence）</p>
+        <p class="desc">認證狗狗禮儀與基本規範，通過後可獲相關福利（依官方規定）。</p>
+        <div class="row">
+          <span class="pill">期間：2025.12.20 ~ 2026.12.31</span>
+          <span class="pill">價格：<span class="price">₩ 10,000</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">Be My Friend — 與流浪犬共度一天（Be My Friend - 유기견과 함께하는 하루）</p>
+        <p class="desc">與流浪犬互動陪伴的一日體驗活動。</p>
+        <div class="row">
+          <span class="pill">價格：<span class="price">未顯示</span></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <p class="meta">SONO PET VIVALDI PARK</p>
+        <p class="title">與寵物一起晨間散步（Morning work accompanied by pets）</p>
+        <p class="desc">與寵物一起親近自然、散步互動的晨間活動。</p>
+        <div class="row">
+          <span class="pill">價格：<span class="price">免費（Free of charge）</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Facilities ================= -->
+    <section class="panel" id="facilities" aria-labelledby="設施">
+      <div class="section-head">
+        <div>
+          <h2>設施（Facilities）</h2>
+        </div>
+        <a class="btn" href="https://www.sonohotelsresorts.com/petclub/conveniences" target="_blank" rel="noopener">
+          官方設施頁（開新分頁）
+        </a>
+      </div>
+
+      <table aria-label="設施列表">
+        <thead>
+          <tr>
+            <th>設施</th>
+            <th>Facility (EN)</th>
+            <th>據點</th>
+            <th>補充說明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>寵物寄宿／寵物住宿</td>
+            <td>SONO Pet Boarding</td>
+            <td>SONO PET VIVALDI PARK</td>
+            <td>可安心寄放毛孩的寄宿服務。</td>
+          </tr>
+          <tr>
+            <td>寵物療癒照護</td>
+            <td>SONO Pet Healing Care</td>
+            <td>SONO PET VIVALDI PARK</td>
+            <td>在自然環境中享受放鬆的照護與管理（依官方方案）。</td>
+          </tr>
+          <tr>
+            <td>自助寵物洗澡</td>
+            <td>SONO Pet Foamy</td>
+            <td>SONO PET VIVALDI PARK</td>
+            <td>自助式洗寵服務（泡沫、沖洗等一站式）。</td>
+          </tr>
+          <tr>
+            <td>寵物寄宿／寵物住宿</td>
+            <td>SONO Pet Boarding</td>
+            <td>SONO CALM GOYANG（West Tower）</td>
+            <td>旅客可將毛孩安心寄放的寄宿服務。</td>
+          </tr>
+          <tr>
+            <td>寵物醫院</td>
+            <td>Sono Pet Hospital</td>
+            <td>SONO CALM GOYANG（West Tower）</td>
+            <td>健康檢查、疫苗、基本與進階檢查與治療（依院方規定）。</td>
+          </tr>
+          <tr>
+            <td>寵物學校</td>
+            <td>Sono Pet School</td>
+            <td>SONO CALM GOYANG</td>
+            <td>提供多元訓練課程，滿足毛孩「自由」與「本能」的需求（依官方說明）。</td>
+          </tr>
+          <tr>
+            <td>寵物美容</td>
+            <td>Sono Pet Beauty</td>
+            <td>SONO CALM GOYANG</td>
+            <td>寵物美容修剪服務（以官方預約/現場公告為準）。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ================= Shopping ================= -->
+    <section class="panel" id="shopping" aria-labelledby="購物">
+      <div class="section-head">
+        <div>
+          <h2>購物（Shopping）</h2>
+        </div>
+        <a class="btn" href="https://www.sonohotelsresorts.com/petclub/shopping" target="_blank" rel="noopener">
+          官方購物頁（開新分頁）
+        </a>
+      </div>
+
+      <div class="card">
+        <p class="title">購物頁導覽（Shopping Page）</p>
+        <p class="desc">
+          請點「官方購物頁」查看商品與店鋪資訊。<br/>
+        </p>
+        <div class="row">
+          <span class="pill">連結：<a href="https://www.sonohotelsresorts.com/petclub/shopping" target="_blank" rel="noopener">Shopping</a></span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const tabs = document.querySelectorAll(".tab");
+    const panels = document.querySelectorAll(".panel");
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.tab;
+
+        tabs.forEach(t => t.classList.toggle("active", t === btn));
+        panels.forEach(p => p.classList.toggle("active", p.id === id));
+      });
+    });
+  </script>
+</body>
+</html>
