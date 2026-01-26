@@ -32,6 +32,109 @@
   </div>
 </section>
 
+<section class="card" id="fx-sync">
+  <h2>匯率換算</h2>
+  <p class="muted">固定匯率：30 TWD = 1 USD = 1400 KRW</p>
+
+  <div class="fx-sync-grid">
+    <label>
+      <span>美金 USD</span>
+      <input id="usd" type="number" inputmode="decimal" step="0.01" />
+    </label>
+
+    <label>
+      <span>台幣 TWD</span>
+      <input id="twd" type="number" inputmode="decimal" step="0.01" />
+    </label>
+
+    <label>
+      <span>韓元 KRW</span>
+      <input id="krw" type="number" inputmode="decimal" step="1" />
+    </label>
+  </div>
+</section>
+
+<style>
+  .card {
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    padding: 16px;
+    background: #fff;
+  }
+  .card h2 {
+    margin: 0 0 6px 0;
+    font-size: 18px;
+  }
+  .muted {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  .fx-sync-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .fx-sync-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+  }
+  .fx-sync-grid input {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+  }
+  @media (max-width: 600px) {
+    .fx-sync-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+(() => {
+  const usd = document.getElementById("usd");
+  const twd = document.getElementById("twd");
+  const krw = document.getElementById("krw");
+
+  // 固定匯率
+  // 30 TWD = 1 USD = 1400 KRW
+  let lock = false;
+
+  function fromUSD(value) {
+    twd.value = (value * 30).toFixed(2);
+    krw.value = Math.round(value * 1400);
+  }
+
+  function fromTWD(value) {
+    usd.value = (value / 30).toFixed(2);
+    krw.value = Math.round(value * (1400 / 30));
+  }
+
+  function fromKRW(value) {
+    usd.value = (value / 1400).toFixed(2);
+    twd.value = (value * (30 / 1400)).toFixed(2);
+  }
+
+  function safe(fn) {
+    return e => {
+      if (lock) return;
+      lock = true;
+      const v = parseFloat(e.target.value);
+      if (!isNaN(v)) fn(v);
+      lock = false;
+    };
+  }
+
+  usd.addEventListener("input", safe(fromUSD));
+  twd.addEventListener("input", safe(fromTWD));
+  krw.addEventListener("input", safe(fromKRW));
+})();
+</script>
+
 <section class="card" id="itinerary">
   <h2>每日行程（點日期可跳轉）</h2>
   <div class="chips">
